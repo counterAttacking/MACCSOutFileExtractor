@@ -1,0 +1,1 @@
+# MACCS Out File Extractor
