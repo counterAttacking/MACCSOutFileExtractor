@@ -75,6 +75,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ErrorMessageForm";
             this.Text = "Error Message";
+            this.Load += new System.EventHandler(this.ErrorMessageForm_Load);
             this.ResumeLayout(false);
 
         }

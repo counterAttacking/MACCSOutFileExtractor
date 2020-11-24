@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MACCSOutFileExtractor.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,14 +19,25 @@ namespace MACCSOutFileExtractor.View
             InitializeComponent();
         }
 
-        public void AddOutFiles()
+        public void AddOutFiles(List<OutFile> files)
         {
-
+            this.tvwFiles.Nodes.Clear();
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("Out Files");
+            stringBuilder.Append(" (");
+            stringBuilder.Append(files.Count.ToString());
+            stringBuilder.Append(")");
+            var fileNode = new TreeNode(stringBuilder.ToString());
+            foreach (var file in files)
+            {
+                fileNode.Nodes.Add(file.path, file.name);
+            }
+            this.tvwFiles.Nodes.Add(fileNode);
         }
 
         public void DeleteAllFiles()
         {
-
+            this.tvwFiles.Nodes.Clear();
         }
     }
 }

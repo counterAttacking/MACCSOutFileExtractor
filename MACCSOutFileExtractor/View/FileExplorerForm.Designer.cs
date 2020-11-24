@@ -28,13 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.tvwFiles = new System.Windows.Forms.TreeView();
             this.SuspendLayout();
+            // 
+            // tvwFiles
+            // 
+            this.tvwFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvwFiles.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.tvwFiles.Location = new System.Drawing.Point(0, 0);
+            this.tvwFiles.Name = "tvwFiles";
+            this.tvwFiles.Size = new System.Drawing.Size(800, 450);
+            this.tvwFiles.TabIndex = 0;
             // 
             // FileExplorerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.tvwFiles);
             this.Name = "FileExplorerForm";
             this.TabText = "File Explorer";
             this.ResumeLayout(false);
@@ -42,5 +53,7 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.TreeView tvwFiles;
     }
 }

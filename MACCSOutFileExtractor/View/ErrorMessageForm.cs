@@ -12,9 +12,23 @@ namespace MACCSOutFileExtractor.View
 {
     public partial class ErrorMessageForm : Form
     {
-        public ErrorMessageForm()
+        private string msg;
+
+        public ErrorMessageForm(string msg)
         {
             InitializeComponent();
+
+            this.msg = msg;
+        }
+
+        private void ErrorMessageForm_Load(object sender, EventArgs e)
+        {
+            this.ShowMsg();
+        }
+
+        private void ShowMsg()
+        {
+            this.txtErrorMsg.Text = this.msg;
         }
     }
 }
