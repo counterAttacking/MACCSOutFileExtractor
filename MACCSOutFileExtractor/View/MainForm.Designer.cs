@@ -28,16 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dockPnlMain = new WeifenLuo.WinFormsUI.Docking.DockPanel();
-            this.vS2015DarkTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme();
             this.openOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.msiOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.msiOpenFiles = new System.Windows.Forms.ToolStripMenuItem();
+            this.editEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.msiDeleteAllFiles = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.msiRun = new System.Windows.Forms.ToolStripMenuItem();
+            this.dockPnlMain = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+            this.vS2015DarkTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,7 +56,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileFToolStripMenuItem,
-            this.editEToolStripMenuItem});
+            this.editEToolStripMenuItem,
+            this.buildBToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1008, 24);
@@ -68,6 +72,29 @@
             this.fileFToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.fileFToolStripMenuItem.Text = "File(&F)";
             // 
+            // openOToolStripMenuItem
+            // 
+            this.openOToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.msiOpenFolder,
+            this.msiOpenFiles});
+            this.openOToolStripMenuItem.Name = "openOToolStripMenuItem";
+            this.openOToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.openOToolStripMenuItem.Text = "Open(&O)";
+            // 
+            // msiOpenFolder
+            // 
+            this.msiOpenFolder.Name = "msiOpenFolder";
+            this.msiOpenFolder.Size = new System.Drawing.Size(124, 22);
+            this.msiOpenFolder.Text = "Folder(&D)";
+            this.msiOpenFolder.Click += new System.EventHandler(this.MsiOpenFolder_Click);
+            // 
+            // msiOpenFiles
+            // 
+            this.msiOpenFiles.Name = "msiOpenFiles";
+            this.msiOpenFiles.Size = new System.Drawing.Size(124, 22);
+            this.msiOpenFiles.Text = "Files(&F)";
+            this.msiOpenFiles.Click += new System.EventHandler(this.MsiOpenFiles_Click);
+            // 
             // editEToolStripMenuItem
             // 
             this.editEToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -75,6 +102,28 @@
             this.editEToolStripMenuItem.Name = "editEToolStripMenuItem";
             this.editEToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
             this.editEToolStripMenuItem.Text = "Edit(&E)";
+            // 
+            // msiDeleteAllFiles
+            // 
+            this.msiDeleteAllFiles.Name = "msiDeleteAllFiles";
+            this.msiDeleteAllFiles.Size = new System.Drawing.Size(170, 22);
+            this.msiDeleteAllFiles.Text = "Delete All Files(&D)";
+            this.msiDeleteAllFiles.Click += new System.EventHandler(this.MsiDeleteAllFiles_Click);
+            // 
+            // buildBToolStripMenuItem
+            // 
+            this.buildBToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.msiRun});
+            this.buildBToolStripMenuItem.Name = "buildBToolStripMenuItem";
+            this.buildBToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.buildBToolStripMenuItem.Text = "Build(&B)";
+            // 
+            // msiRun
+            // 
+            this.msiRun.Name = "msiRun";
+            this.msiRun.Size = new System.Drawing.Size(110, 22);
+            this.msiRun.Text = "Run(&R)";
+            this.msiRun.Click += new System.EventHandler(this.MsiRun_Click);
             // 
             // dockPnlMain
             // 
@@ -88,36 +137,6 @@
             this.dockPnlMain.TabIndex = 2;
             this.dockPnlMain.Theme = this.vS2015DarkTheme1;
             // 
-            // openOToolStripMenuItem
-            // 
-            this.openOToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.msiOpenFolder,
-            this.msiOpenFiles});
-            this.openOToolStripMenuItem.Name = "openOToolStripMenuItem";
-            this.openOToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openOToolStripMenuItem.Text = "Open(&O)";
-            // 
-            // msiOpenFolder
-            // 
-            this.msiOpenFolder.Name = "msiOpenFolder";
-            this.msiOpenFolder.Size = new System.Drawing.Size(180, 22);
-            this.msiOpenFolder.Text = "Folder(&D)";
-            this.msiOpenFolder.Click += new System.EventHandler(this.MsiOpenFolder_Click);
-            // 
-            // msiOpenFiles
-            // 
-            this.msiOpenFiles.Name = "msiOpenFiles";
-            this.msiOpenFiles.Size = new System.Drawing.Size(180, 22);
-            this.msiOpenFiles.Text = "Files(&F)";
-            this.msiOpenFiles.Click += new System.EventHandler(this.MsiOpenFiles_Click);
-            // 
-            // msiDeleteAllFiles
-            // 
-            this.msiDeleteAllFiles.Name = "msiDeleteAllFiles";
-            this.msiDeleteAllFiles.Size = new System.Drawing.Size(180, 22);
-            this.msiDeleteAllFiles.Text = "Delete All Files(&D)";
-            this.msiDeleteAllFiles.Click += new System.EventHandler(this.MsiDeleteAllFiles_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -126,6 +145,7 @@
             this.Controls.Add(this.dockPnlMain);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
@@ -151,5 +171,7 @@
         private System.Windows.Forms.ToolStripMenuItem msiOpenFolder;
         private System.Windows.Forms.ToolStripMenuItem msiOpenFiles;
         private System.Windows.Forms.ToolStripMenuItem msiDeleteAllFiles;
+        private System.Windows.Forms.ToolStripMenuItem buildBToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem msiRun;
     }
 }

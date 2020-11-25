@@ -70,5 +70,10 @@ namespace MACCSOutFileExtractor.View
             fileOpenService.ClearList();
             this.frmFileExplorer.DeleteAllFiles();
         }
+
+        private void MsiRun_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
