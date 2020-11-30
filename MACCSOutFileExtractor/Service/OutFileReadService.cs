@@ -12,7 +12,8 @@ namespace MACCSOutFileExtractor.Service
     {
         private OutFile[] inputFiles;
         private ExtractData[] extractDatas;
-        private static string targetStr = "RESULT NAME = HEALTH EFFECTS CASES";
+        private static string healthStr = "RESULT NAME = HEALTH EFFECTS CASES";
+        private static string populationStr = "RESULT NAME = POPULATION DOSE (Sv)";
         private static string fatStr = "FAT/TOTAL";
         private static string overallStr = "OVERALL";
         private static string overallEndStr = "SOURCE TERM";
@@ -22,13 +23,15 @@ namespace MACCSOutFileExtractor.Service
             this.inputFiles = inputFiles;
         }
 
+        public ExtractData[] GetExtractDatas() => this.extractDatas;
+
         public void ReadOutFile()
         {
             var inputFileLen = this.inputFiles.Length;
             var extracts = new List<ExtractData>();
             for (var i = 0; i < inputFileLen; i++)
             {
-                var isTargetStrFound = false;
+                var ishealthStrFound = false;
                 var isOverallStrFound = false;
                 var overallIdx = 0;
                 string name = null;
@@ -45,17 +48,25 @@ namespace MACCSOutFileExtractor.Service
                             /* 'RESULT NAME = HEALTH EFFECTS CASES'에 해당하는 부분에 찾고자 하는 값들이 존재
                              * 이 분기문 밑으로 넘어가면 안 되기 때문에 continue 설정
                              */
-                            if (readLine.Contains(targetStr))
+                            if (readLine.Contains(healthStr))
                             {
-                                isTargetStrFound = true;
+                                ishealthStrFound = true;
                                 continue;
                             }
 
-                            /* targetStr 바로 다음 줄에는
+                            /* RESULT NAME = POPULATION DOSE (Sv)이 나오면
+                             * RESULT NAME = HEALTH EFFECTS CASES에 해당하는 값들이 없기 때문에
+                             */
+                            if (readLine.Contains(populationStr))
+                            {
+                                break;
+                            }
+
+                            /* healthStr 바로 다음 줄에는
                              * EAL FAT/TOTAL, CAN FAT/TOTAL에 대한 내용 존재
                              * OVERALL이 존재하는 위치에 해당하는 값들만 추출
                              */
-                            if (isTargetStrFound == true)
+                            if (ishealthStrFound == true)
                             {
                                 // EAL FAT/TOTAL, CAN FAT/TOTAL에 대한 내용 처리
                                 if (readLine.Contains(fatStr))
@@ -94,7 +105,7 @@ namespace MACCSOutFileExtractor.Service
                                         crudes.Add(crude);
                                         intervals.Clear();
                                         intervalValues.Clear();
-                                        isTargetStrFound = false;
+                                        ishealthStrFound = false;
                                         isOverallStrFound = false;
                                         continue;
                                     }

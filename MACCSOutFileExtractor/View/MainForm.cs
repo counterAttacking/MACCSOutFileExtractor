@@ -74,8 +74,8 @@ namespace MACCSOutFileExtractor.View
 
         private void MsiRun_Click(object sender, EventArgs e)
         {
-            var service = new OutFileReadService(OutFileOpenService.GetOutFileOpenService.GetFiles().ToArray());
-            service.ReadOutFile();
+            var readService = new OutFileReadService(OutFileOpenService.GetOutFileOpenService.GetFiles().ToArray());
+            readService.ReadOutFile();
         }
     }
 }
