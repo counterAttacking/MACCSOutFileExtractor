@@ -19,6 +19,12 @@ namespace MACCSOutFileExtractor.View
             InitializeComponent();
         }
 
+        private void FileExplorerForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.Hide();
+            e.Cancel = true;
+        }
+
         public void AddOutFiles(List<OutFile> files)
         {
             this.tvwFiles.Nodes.Clear();

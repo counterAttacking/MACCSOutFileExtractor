@@ -30,6 +30,11 @@ namespace MACCSOutFileExtractor.View
             this.frmFileExplorer.Show(this.dockPnlMain, DockState.DockLeft);
         }
 
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.Dispose();
+        }
+
         private void MsiOpenFolder_Click(object sender, EventArgs e)
         {
             var openFolderDialog = new CommonOpenFileDialog()
@@ -70,6 +75,11 @@ namespace MACCSOutFileExtractor.View
             var fileOpenService = OutFileOpenService.GetOutFileOpenService;
             fileOpenService.ClearList();
             this.frmFileExplorer.DeleteAllFiles();
+        }
+
+        private void MsiShowInputFileList_Click(object sender, EventArgs e)
+        {
+            this.frmFileExplorer.Show(this.dockPnlMain, DockState.DockLeft);
         }
 
         private void MsiRun_Click(object sender, EventArgs e)

@@ -50,6 +50,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FileExplorerForm";
             this.TabText = "File Explorer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FileExplorerForm_FormClosing);
             this.ResumeLayout(false);
 
         }
