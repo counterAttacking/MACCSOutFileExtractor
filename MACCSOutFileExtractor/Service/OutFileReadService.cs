@@ -12,6 +12,7 @@ namespace MACCSOutFileExtractor.Service
     {
         private OutFile[] inputFiles;
         private ExtractData[] extractDatas;
+        private string[] distances;
         private static string healthStr = "RESULT NAME = HEALTH EFFECTS CASES";
         private static string populationStr = "RESULT NAME = POPULATION DOSE (Sv)";
         private static string fatStr = "FAT/TOTAL";
@@ -23,12 +24,15 @@ namespace MACCSOutFileExtractor.Service
             this.inputFiles = inputFiles;
         }
 
-        public ExtractData[] GetExtractDatas() => this.extractDatas;
+        public object GetExtractDatas() => this.extractDatas.Clone();
+
+        public object GetDistances() => this.distances.Clone();
 
         public void ReadOutFile()
         {
             var inputFileLen = this.inputFiles.Length;
             var extracts = new List<ExtractData>();
+            var distances = new List<string>();
             for (var i = 0; i < inputFileLen; i++)
             {
                 var ishealthStrFound = false;
@@ -72,6 +76,10 @@ namespace MACCSOutFileExtractor.Service
                                 if (readLine.Contains(fatStr))
                                 {
                                     name = readLine.TrimStart();
+                                    if (!distances.Contains(name))
+                                    {
+                                        distances.Add(name);
+                                    }
                                     continue;
                                 }
                                 // OVERALL이 존재하는 위치 파악
@@ -133,6 +141,7 @@ namespace MACCSOutFileExtractor.Service
                 extracts.Add(extract);
             }
             this.extractDatas = extracts.ToArray();
+            this.distances = distances.ToArray();
         }
     }
 }
