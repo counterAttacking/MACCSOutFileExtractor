@@ -74,6 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Manager\ExtractManager.cs" />
     <Compile Include="Model\CrudeData.cs" />
     <Compile Include="Model\ExtractData.cs" />
     <Compile Include="Model\OutFile.cs" />

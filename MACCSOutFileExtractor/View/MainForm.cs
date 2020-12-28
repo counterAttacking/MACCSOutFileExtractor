@@ -1,4 +1,5 @@
-﻿using MACCSOutFileExtractor.Service;
+﻿using MACCSOutFileExtractor.Manager;
+using MACCSOutFileExtractor.Service;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -84,8 +85,8 @@ namespace MACCSOutFileExtractor.View
 
         private void MsiRun_Click(object sender, EventArgs e)
         {
-            var readService = new OutFileReadService(OutFileOpenService.GetOutFileOpenService.GetFiles().ToArray());
-            readService.ReadOutFile();
+            var extractManager = new ExtractManager(OutFileOpenService.GetOutFileOpenService.GetFiles().ToArray());
+            extractManager.Run();
         }
     }
 }
