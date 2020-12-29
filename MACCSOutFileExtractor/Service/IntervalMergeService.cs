@@ -49,5 +49,7 @@ namespace MACCSOutFileExtractor.Service
 
             this.intervals = mergedIntervals;
         }
+
+        public object GetMergedInterval() => this.intervals.Clone();
     }
 }

@@ -12,6 +12,7 @@ namespace MACCSOutFileExtractor.Manager
     {
         private OutFileReadService readService;
         private IntervalMergeService mergeService;
+        private ExtractDataRefineService refineService;
 
         public ExtractManager(OutFile[] inputFiles)
         {
@@ -23,6 +24,7 @@ namespace MACCSOutFileExtractor.Manager
             this.readService.ReadOutFile();
             this.mergeService = new IntervalMergeService(this.readService.GetExtractDatas(), this.readService.GetDistances());
             this.mergeService.MergeInterval();
+            this.refineService = new ExtractDataRefineService(this.readService.GetExtractDatas(), this.mergeService.GetMergedInterval());
         }
     }
 }
