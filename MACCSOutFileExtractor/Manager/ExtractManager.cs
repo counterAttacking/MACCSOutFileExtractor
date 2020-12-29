@@ -24,7 +24,8 @@ namespace MACCSOutFileExtractor.Manager
             this.readService.ReadOutFile();
             this.mergeService = new IntervalMergeService(this.readService.GetExtractDatas(), this.readService.GetDistances());
             this.mergeService.MergeInterval();
-            this.refineService = new ExtractDataRefineService(this.readService.GetExtractDatas(), this.mergeService.GetMergedInterval());
+            this.refineService = new ExtractDataRefineService(this.readService.GetExtractDatas(), this.mergeService.GetMergedInterval(),this.readService.GetDistances());
+            this.refineService.DataRefine();
         }
     }
 }

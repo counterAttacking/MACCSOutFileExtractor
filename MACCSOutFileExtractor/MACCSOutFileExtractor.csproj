@@ -80,6 +80,7 @@
     <Compile Include="Model\OutFile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\ExtractDataRefineService.cs" />
     <Compile Include="Service\IntervalMergeService.cs" />
     <Compile Include="Service\OutFileOpenService.cs" />
     <Compile Include="Service\OutFileReadService.cs" />
