@@ -14,7 +14,7 @@ namespace MACCSOutFileExtractor.Model
             get;
         }
 
-        public CrudeData[] crudes
+        public OutData[] crudes
         {
             set;
             get;

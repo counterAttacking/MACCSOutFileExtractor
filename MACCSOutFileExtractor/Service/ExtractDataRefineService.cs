@@ -24,12 +24,12 @@ namespace MACCSOutFileExtractor.Service
         {
             for (var i = 0; i < this.distances.Length; i++)
             {
-                var datas = new List<CrudeData>();
+                var datas = new List<OutData>();
                 for (var j = 0; j < this.extractDatas.Length; j++)
                 {
                     if (this.distances[i].Equals(this.extractDatas[j].crudes[i].name))
                     {
-                        var data = new CrudeData
+                        var data = new OutData
                         {
                             name = this.extractDatas[j].name,
                             interval = this.intervals[i],

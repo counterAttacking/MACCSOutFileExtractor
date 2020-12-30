@@ -41,7 +41,7 @@ namespace MACCSOutFileExtractor.Service
                 string name = null;
                 var intervals = new List<double>();
                 var intervalValues = new List<double>();
-                var crudes = new List<CrudeData>();
+                var crudes = new List<OutData>();
                 using (FileStream fileStream = new FileStream(inputFiles[i].fullPath, FileMode.Open, FileAccess.Read))
                 {
                     using (StreamReader streamReader = new StreamReader(fileStream, Encoding.UTF8, false))
@@ -104,7 +104,7 @@ namespace MACCSOutFileExtractor.Service
                                     // 'SOURCE TERM  1 OF  1:'가 존재하면 다른 데이터가 존재하므로
                                     if (readLine.Contains(overallEndStr))
                                     {
-                                        var crude = new CrudeData()
+                                        var crude = new OutData()
                                         {
                                             name = name,
                                             interval = intervals.ToArray(),

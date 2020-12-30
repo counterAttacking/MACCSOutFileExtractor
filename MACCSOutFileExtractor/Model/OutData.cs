@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MACCSOutFileExtractor.Model
 {
-    public class CrudeData
+    public class OutData
     {
         public string name
         {
