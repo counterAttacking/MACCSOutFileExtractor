@@ -51,6 +51,8 @@ namespace MACCSOutFileExtractor.Service
                     }
                 }
                 this.refineDatas = datas.ToArray();
+                var interpolationService = new InterpolationService(this.refineDatas.Clone());
+                interpolationService.Interpolation();
             }
         }
     }
