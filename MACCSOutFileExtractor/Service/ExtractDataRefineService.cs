@@ -12,6 +12,7 @@ namespace MACCSOutFileExtractor.Service
         private ExtractData[] extractDatas;
         private double[][] intervals;
         private string[] distances;
+        private RefineData[] refineDatas;
 
         public ExtractDataRefineService(object extractDatas, object intervals, object distances)
         {
@@ -22,18 +23,24 @@ namespace MACCSOutFileExtractor.Service
 
         public void DataRefine()
         {
+            this.MatchPreviousData();
+        }
+
+        private void MatchPreviousData()
+        {
             for (var i = 0; i < this.distances.Length; i++)
             {
-                var datas = new List<OutData>();
+                var datas = new List<RefineData>();
                 for (var j = 0; j < this.extractDatas.Length; j++)
                 {
                     if (this.distances[i].Equals(this.extractDatas[j].crudes[i].name))
                     {
-                        var data = new OutData
+                        var data = new RefineData
                         {
                             name = this.extractDatas[j].name,
                             interval = this.intervals[i],
-                            intervalVal = new double[this.intervals[i].Length]
+                            intervalVal = new double[this.intervals[i].Length],
+                            distance = this.extractDatas[j].crudes[i].name
                         };
                         for (var k = 0; k < this.extractDatas[j].crudes[i].interval.Length; k++)
                         {
@@ -43,6 +50,7 @@ namespace MACCSOutFileExtractor.Service
                         datas.Add(data);
                     }
                 }
+                this.refineDatas = datas.ToArray();
             }
         }
     }
