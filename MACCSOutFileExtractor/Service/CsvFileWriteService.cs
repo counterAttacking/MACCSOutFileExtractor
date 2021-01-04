@@ -25,7 +25,7 @@ namespace MACCSOutFileExtractor.Service
         {
             var fileName = new StringBuilder();
             fileName.Append(healthStr);
-            this.distanceStr = this.distanceStr.Replace('/', ' ');
+            this.distanceStr = this.distanceStr.Replace('/', ',');
             fileName.Append(this.distanceStr);
             fileName.Append(extStr);
 
