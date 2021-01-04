@@ -54,6 +54,8 @@ namespace MACCSOutFileExtractor.Service
                 var interpolationService = new InterpolationService(this.refineDatas.Clone());
                 interpolationService.Interpolation();
                 this.refineDatas = (RefineData[])interpolationService.GetRefineData();
+                var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), this.distances[i]);
+                fileWriteService.FileWrite();
             }
         }
     }
