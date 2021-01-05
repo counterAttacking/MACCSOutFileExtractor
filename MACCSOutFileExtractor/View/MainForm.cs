@@ -37,24 +37,7 @@ namespace MACCSOutFileExtractor.View
             this.Dispose();
         }
 
-        private void MsiOpenFolder_Click(object sender, EventArgs e)
-        {
-            var openFolderDialog = new CommonOpenFileDialog()
-            {
-                IsFolderPicker = true
-            };
-            if (openFolderDialog.ShowDialog() == CommonFileDialogResult.Cancel)
-            {
-                return;
-            }
-
-            var fileOpenService = OutFileOpenService.GetOutFileOpenService;
-            fileOpenService.OpenFile(openFolderDialog.FileName);
-
-            this.frmFileExplorer.AddOutFiles(fileOpenService.GetFiles());
-        }
-
-        private void MsiOpenFiles_Click(object sender, EventArgs e)
+        private void MsiOpen_Click(object sender, EventArgs e)
         {
             var openFileDialog = new OpenFileDialog()
             {
