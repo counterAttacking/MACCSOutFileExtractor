@@ -7,14 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace MACCSOutFileExtractor.View
 {
-    public partial class FrequencyInputForm : Form
+    public partial class FrequencyInputForm : DockContent
     {
         public FrequencyInputForm()
         {
             InitializeComponent();
+        }
+
+        private void FrequencyInputForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.Hide();
+            e.Cancel = true;
         }
     }
 }

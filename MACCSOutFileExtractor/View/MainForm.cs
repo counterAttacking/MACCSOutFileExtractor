@@ -19,17 +19,20 @@ namespace MACCSOutFileExtractor.View
     public partial class MainForm : Form
     {
         private FileExplorerForm frmFileExplorer;
+        private FrequencyInputForm frmFrequencyInput;
 
         public MainForm()
         {
             InitializeComponent();
 
             this.frmFileExplorer = new FileExplorerForm();
+            this.frmFrequencyInput = new FrequencyInputForm();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.frmFileExplorer.Show(this.dockPnlMain, DockState.DockLeft);
+            this.frmFrequencyInput.Show(this.dockPnlMain, DockState.DockLeftAutoHide);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -65,6 +68,11 @@ namespace MACCSOutFileExtractor.View
         private void MsiShowInputFileList_Click(object sender, EventArgs e)
         {
             this.frmFileExplorer.Show(this.dockPnlMain, DockState.DockLeft);
+        }
+
+        private void MsiShowFrequencyInput_Click(object sender, EventArgs e)
+        {
+            this.frmFrequencyInput.Show(this.dockPnlMain, DockState.DockLeft);
         }
 
         private void MsiRun_Click(object sender, EventArgs e)

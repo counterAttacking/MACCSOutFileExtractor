@@ -99,6 +99,12 @@
     <Compile Include="View\FileExplorerForm.Designer.cs">
       <DependentUpon>FileExplorerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\FrequencyInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\FrequencyInputForm.Designer.cs">
+      <DependentUpon>FrequencyInputForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,6 +126,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\FileExplorerForm.resx">
       <DependentUpon>FileExplorerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\FrequencyInputForm.resx">
+      <DependentUpon>FrequencyInputForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

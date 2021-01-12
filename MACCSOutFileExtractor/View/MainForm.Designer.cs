@@ -41,6 +41,7 @@
             this.msiRun = new System.Windows.Forms.ToolStripMenuItem();
             this.dockPnlMain = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.vS2015DarkTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme();
+            this.msiShowFrequencyInput = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,7 +77,7 @@
             // msiOpen
             // 
             this.msiOpen.Name = "msiOpen";
-            this.msiOpen.Size = new System.Drawing.Size(180, 22);
+            this.msiOpen.Size = new System.Drawing.Size(120, 22);
             this.msiOpen.Text = "Open(&O)";
             this.msiOpen.Click += new System.EventHandler(this.MsiOpen_Click);
             // 
@@ -98,7 +99,8 @@
             // viewVToolStripMenuItem
             // 
             this.viewVToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.msiShowInputFileList});
+            this.msiShowInputFileList,
+            this.msiShowFrequencyInput});
             this.viewVToolStripMenuItem.Name = "viewVToolStripMenuItem";
             this.viewVToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.viewVToolStripMenuItem.Text = "View(&V)";
@@ -106,7 +108,7 @@
             // msiShowInputFileList
             // 
             this.msiShowInputFileList.Name = "msiShowInputFileList";
-            this.msiShowInputFileList.Size = new System.Drawing.Size(146, 22);
+            this.msiShowInputFileList.Size = new System.Drawing.Size(180, 22);
             this.msiShowInputFileList.Text = "Input File List";
             this.msiShowInputFileList.Click += new System.EventHandler(this.MsiShowInputFileList_Click);
             // 
@@ -121,7 +123,7 @@
             // msiRun
             // 
             this.msiRun.Name = "msiRun";
-            this.msiRun.Size = new System.Drawing.Size(180, 22);
+            this.msiRun.Size = new System.Drawing.Size(110, 22);
             this.msiRun.Text = "Run(&R)";
             this.msiRun.Click += new System.EventHandler(this.MsiRun_Click);
             // 
@@ -136,6 +138,13 @@
             this.dockPnlMain.Size = new System.Drawing.Size(1008, 515);
             this.dockPnlMain.TabIndex = 2;
             this.dockPnlMain.Theme = this.vS2015DarkTheme1;
+            // 
+            // msiShowFrequencyInput
+            // 
+            this.msiShowFrequencyInput.Name = "msiShowFrequencyInput";
+            this.msiShowFrequencyInput.Size = new System.Drawing.Size(180, 22);
+            this.msiShowFrequencyInput.Text = "Frequency Input";
+            this.msiShowFrequencyInput.Click += new System.EventHandler(this.MsiShowFrequencyInput_Click);
             // 
             // MainForm
             // 
@@ -174,5 +183,6 @@
         private System.Windows.Forms.ToolStripMenuItem msiRun;
         private System.Windows.Forms.ToolStripMenuItem viewVToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem msiShowInputFileList;
+        private System.Windows.Forms.ToolStripMenuItem msiShowFrequencyInput;
     }
 }

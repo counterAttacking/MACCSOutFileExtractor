@@ -91,6 +91,8 @@
             this.Controls.Add(this.dgvFrequency);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrequencyInputForm";
+            this.TabText = "Frequency Input";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrequencyInputForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dgvFrequency)).EndInit();
             this.ResumeLayout(false);
 
