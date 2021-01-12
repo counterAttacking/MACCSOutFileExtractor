@@ -56,6 +56,7 @@ namespace MACCSOutFileExtractor.View
             fileOpenService.OpenFile(openFileDialog.FileNames);
 
             this.frmFileExplorer.AddOutFiles(fileOpenService.GetFiles());
+            this.frmFrequencyInput.AddOutFiles(fileOpenService.GetFiles());
         }
 
         private void MsiDeleteAllFiles_Click(object sender, EventArgs e)
@@ -63,6 +64,7 @@ namespace MACCSOutFileExtractor.View
             var fileOpenService = OutFileOpenService.GetOutFileOpenService;
             fileOpenService.ClearList();
             this.frmFileExplorer.DeleteAllFiles();
+            this.frmFrequencyInput.DeleteAllFiles();
         }
 
         private void MsiShowInputFileList_Click(object sender, EventArgs e)

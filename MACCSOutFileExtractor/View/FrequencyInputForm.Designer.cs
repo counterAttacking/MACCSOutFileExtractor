@@ -64,7 +64,6 @@
             this.dgvFrequency.GridColor = System.Drawing.Color.Black;
             this.dgvFrequency.Location = new System.Drawing.Point(0, 0);
             this.dgvFrequency.Name = "dgvFrequency";
-            this.dgvFrequency.ReadOnly = true;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9.75F);
