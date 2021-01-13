@@ -81,6 +81,7 @@
             this.dgvFrequency.RowTemplate.Height = 23;
             this.dgvFrequency.Size = new System.Drawing.Size(800, 450);
             this.dgvFrequency.TabIndex = 0;
+            this.dgvFrequency.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DgvFrequency_KeyDown);
             // 
             // FrequencyInputForm
             // 

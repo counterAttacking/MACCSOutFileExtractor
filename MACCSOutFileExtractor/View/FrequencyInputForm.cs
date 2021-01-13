@@ -30,12 +30,37 @@ namespace MACCSOutFileExtractor.View
             e.Cancel = true;
         }
 
+        private void DgvFrequency_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control == true && e.KeyCode == Keys.V)
+            {
+                // DataGridView의 Frequency Value 열에 값을 복사 붙여넣기 해야하기에
+                var targetColIdx = 0;
+                for (var i = 0; i < this.colNames.Length; i++)
+                {
+                    if (this.colNames[i].Equals("Frequency Value"))
+                    {
+                        targetColIdx = i;
+                    }
+                }
+
+                var copiedData = Clipboard.GetText().Split(new string[] { "\r\n" }, StringSplitOptions.None).ToArray();
+                // copiedData.Length - 1 을 하는 이유는 Split()하면서 배열의 제일 마지막에 값이 하나 더 생성이 되기 때문에
+                for (var i = 0; i < copiedData.Length - 1; i++)
+                {
+                    this.dgvFrequency[targetColIdx, i].Value = copiedData[i];
+                }
+            }
+        }
+
         private void SetColNames()
         {
-            var names = new List<string>();
-            names.Add("No");
-            names.Add("File Name");
-            names.Add("Frequency Value");
+            var names = new List<string>
+            {
+                "No",
+                "File Name",
+                "Frequency Value"
+            };
 
             this.colNames = names.ToArray();
         }
