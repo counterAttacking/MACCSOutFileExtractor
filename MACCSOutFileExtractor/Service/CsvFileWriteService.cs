@@ -10,7 +10,7 @@ namespace MACCSOutFileExtractor.Service
 {
     public class CsvFileWriteService
     {
-        private static string healthStr = "HEALTH EFFECTS CASES ";
+        private static string healthStr = "CCDF_HEALTH EFFECTS CASES ";
         private string distanceStr;
         private static string extStr = ".csv";
         private RefineData[] refineDatas;
