@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace MACCSOutFileExtractor.Service
 {
@@ -26,6 +27,38 @@ namespace MACCSOutFileExtractor.Service
             }
         }
 
-        public object GetFrequencies => this.frequencies.Clone();
+        public object GetFrequencies() => this.frequencies.Clone();
+
+        public void ExtractFrequency(DataGridView dgvFrequency)
+        {
+            var frequencies = new List<FrequencyData>();
+            var nameIdx = 0;
+            var valueIdx = 0;
+
+            for (var i = 0; i < dgvFrequency.ColumnCount; i++)
+            {
+                if (dgvFrequency.Columns[i].Name.Equals("File Name"))
+                {
+                    nameIdx = i;
+                }
+                else if (dgvFrequency.Columns[i].Name.Equals("Frequency Value"))
+                {
+                    valueIdx = i;
+                }
+            }
+
+            for (var i = 0; i < dgvFrequency.RowCount; i++)
+            {
+                var frequency = new FrequencyData
+                {
+                    fileName = dgvFrequency[nameIdx, i].Value.ToString(),
+                    frequencyValue = Convert.ToDouble(dgvFrequency[valueIdx, i].Value)
+                };
+
+                frequencies.Add(frequency);
+            }
+
+            this.frequencies = frequencies.ToArray();
+        }
     }
 }

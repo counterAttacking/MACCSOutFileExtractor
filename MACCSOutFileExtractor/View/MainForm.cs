@@ -95,6 +95,9 @@ namespace MACCSOutFileExtractor.View
             }
             else if (this.frmBuildCheck.GetIsClicked == true)
             {
+                var extractFrequency = ExtractFrequencyDataService.GetExtractFrequencyService;
+                extractFrequency.ExtractFrequency(this.frmFrequencyInput.GetDgvFrequency());
+
                 var extractManager = new ExtractManager(outFiles, this.frmBuildCheck.GetIsChecked);
                 extractManager.Run();
             }

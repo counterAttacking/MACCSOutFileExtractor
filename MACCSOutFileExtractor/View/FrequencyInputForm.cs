@@ -91,5 +91,7 @@ namespace MACCSOutFileExtractor.View
         {
             this.dgvFrequency.Rows.Clear();
         }
+
+        public DataGridView GetDgvFrequency() => this.dgvFrequency;
     }
 }

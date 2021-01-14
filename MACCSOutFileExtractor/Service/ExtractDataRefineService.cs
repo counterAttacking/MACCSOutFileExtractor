@@ -13,12 +13,14 @@ namespace MACCSOutFileExtractor.Service
         private double[][] intervals;
         private string[] distances;
         private RefineData[] refineDatas;
+        private bool isFrequency;
 
-        public ExtractDataRefineService(object extractDatas, object intervals, object distances)
+        public ExtractDataRefineService(object extractDatas, object intervals, object distances, bool isFrequency)
         {
             this.extractDatas = (ExtractData[])extractDatas;
             this.intervals = (double[][])intervals;
             this.distances = (string[])distances;
+            this.isFrequency = isFrequency;
         }
 
         public void DataRefine()
@@ -54,8 +56,27 @@ namespace MACCSOutFileExtractor.Service
                 var interpolationService = new InterpolationService(this.refineDatas.Clone());
                 interpolationService.Interpolation();
                 this.refineDatas = (RefineData[])interpolationService.GetRefineData();
+                if (this.isFrequency == true)
+                {
+                    this.MultiplyFrequency();
+                }
                 var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), this.distances[i]);
                 fileWriteService.FileWrite();
+            }
+        }
+
+        private void MultiplyFrequency()
+        {
+            var frequencies = (FrequencyData[])ExtractFrequencyDataService.GetExtractFrequencyService.GetFrequencies();
+
+            for (var i = 0; i < this.refineDatas.Length; i++)
+            {
+                var idx = Array.FindIndex(frequencies, target => target.fileName == this.refineDatas[i].name);
+
+                for (var j = 0; j < this.refineDatas[i].intervalVal.Length; j++)
+                {
+                    this.refineDatas[i].intervalVal[j] *= frequencies[idx].frequencyValue;
+                }
             }
         }
     }
