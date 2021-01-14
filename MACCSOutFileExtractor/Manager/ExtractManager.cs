@@ -13,10 +13,12 @@ namespace MACCSOutFileExtractor.Manager
         private OutFileReadService readService;
         private IntervalMergeService mergeService;
         private ExtractDataRefineService refineService;
+        private bool isFrequency;
 
-        public ExtractManager(OutFile[] inputFiles)
+        public ExtractManager(OutFile[] inputFiles, bool isFrequency)
         {
             this.readService = new OutFileReadService(inputFiles);
+            this.isFrequency = isFrequency;
         }
 
         public void Run()
@@ -24,7 +26,7 @@ namespace MACCSOutFileExtractor.Manager
             this.readService.ReadOutFile();
             this.mergeService = new IntervalMergeService(this.readService.GetExtractDatas(), this.readService.GetDistances());
             this.mergeService.MergeInterval();
-            this.refineService = new ExtractDataRefineService(this.readService.GetExtractDatas(), this.mergeService.GetMergedInterval(),this.readService.GetDistances());
+            this.refineService = new ExtractDataRefineService(this.readService.GetExtractDatas(), this.mergeService.GetMergedInterval(), this.readService.GetDistances());
             this.refineService.DataRefine();
         }
     }

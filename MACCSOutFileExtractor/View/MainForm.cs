@@ -87,6 +87,7 @@ namespace MACCSOutFileExtractor.View
                 MessageBox.Show("There is no out file", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+
             this.frmBuildCheck.ShowDialog();
             if (this.frmBuildCheck.GetIsClicked == false)
             {
@@ -94,7 +95,7 @@ namespace MACCSOutFileExtractor.View
             }
             else if (this.frmBuildCheck.GetIsClicked == true)
             {
-                var extractManager = new ExtractManager(outFiles);
+                var extractManager = new ExtractManager(outFiles, this.frmBuildCheck.GetIsChecked);
                 extractManager.Run();
             }
         }
