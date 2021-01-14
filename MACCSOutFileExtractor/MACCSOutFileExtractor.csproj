@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Manager\ExtractManager.cs" />
+    <Compile Include="Model\FrequencyData.cs" />
     <Compile Include="Model\OutData.cs" />
     <Compile Include="Model\ExtractData.cs" />
     <Compile Include="Model\OutFile.cs" />
