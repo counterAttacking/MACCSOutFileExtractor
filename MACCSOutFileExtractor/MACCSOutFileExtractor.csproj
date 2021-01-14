@@ -87,6 +87,12 @@
     <Compile Include="Service\IntervalMergeService.cs" />
     <Compile Include="Service\OutFileOpenService.cs" />
     <Compile Include="Service\OutFileReadService.cs" />
+    <Compile Include="View\BuildCheckForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\BuildCheckForm.Designer.cs">
+      <DependentUpon>BuildCheckForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\ErrorMessageForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +127,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="View\BuildCheckForm.resx">
+      <DependentUpon>BuildCheckForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\ErrorMessageForm.resx">
       <DependentUpon>ErrorMessageForm.cs</DependentUpon>
     </EmbeddedResource>

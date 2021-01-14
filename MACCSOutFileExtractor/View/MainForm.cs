@@ -20,6 +20,7 @@ namespace MACCSOutFileExtractor.View
     {
         private FileExplorerForm frmFileExplorer;
         private FrequencyInputForm frmFrequencyInput;
+        private BuildCheckForm frmBuildCheck;
 
         public MainForm()
         {
@@ -27,6 +28,7 @@ namespace MACCSOutFileExtractor.View
 
             this.frmFileExplorer = new FileExplorerForm();
             this.frmFrequencyInput = new FrequencyInputForm();
+            this.frmBuildCheck = new BuildCheckForm();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -79,8 +81,22 @@ namespace MACCSOutFileExtractor.View
 
         private void MsiRun_Click(object sender, EventArgs e)
         {
-            var extractManager = new ExtractManager(OutFileOpenService.GetOutFileOpenService.GetFiles().ToArray());
-            extractManager.Run();
+            var outFiles = OutFileOpenService.GetOutFileOpenService.GetFiles().ToArray();
+            if (outFiles.Length <= 0)
+            {
+                MessageBox.Show("There is no out file", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            this.frmBuildCheck.ShowDialog();
+            if (this.frmBuildCheck.GetIsClicked == false)
+            {
+                return;
+            }
+            else if (this.frmBuildCheck.GetIsClicked == true)
+            {
+                var extractManager = new ExtractManager(outFiles);
+                extractManager.Run();
+            }
         }
     }
 }
