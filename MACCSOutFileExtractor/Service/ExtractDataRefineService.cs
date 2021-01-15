@@ -35,19 +35,19 @@ namespace MACCSOutFileExtractor.Service
                 var datas = new List<RefineData>();
                 for (var j = 0; j < this.extractDatas.Length; j++)
                 {
-                    if (this.distances[i].Equals(this.extractDatas[j].crudes[i].name))
+                    if (this.distances[i].Equals(this.extractDatas[j].healthCrudes[i].name))
                     {
                         var data = new RefineData
                         {
                             name = this.extractDatas[j].name,
                             interval = this.intervals[i],
                             intervalVal = new double[this.intervals[i].Length],
-                            distance = this.extractDatas[j].crudes[i].name
+                            distance = this.extractDatas[j].healthCrudes[i].name
                         };
-                        for (var k = 0; k < this.extractDatas[j].crudes[i].interval.Length; k++)
+                        for (var k = 0; k < this.extractDatas[j].healthCrudes[i].interval.Length; k++)
                         {
-                            var idx = Array.FindIndex(this.intervals[i], target => target == this.extractDatas[j].crudes[i].interval[k]);
-                            data.intervalVal[idx] = this.extractDatas[j].crudes[i].intervalVal[k];
+                            var idx = Array.FindIndex(this.intervals[i], target => target == this.extractDatas[j].healthCrudes[i].interval[k]);
+                            data.intervalVal[idx] = this.extractDatas[j].healthCrudes[i].intervalVal[k];
                         }
                         datas.Add(data);
                     }

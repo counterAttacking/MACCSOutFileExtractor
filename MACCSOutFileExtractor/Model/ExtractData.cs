@@ -14,7 +14,19 @@ namespace MACCSOutFileExtractor.Model
             get;
         }
 
-        public OutData[] crudes
+        public OutData[] healthCrudes
+        {
+            set;
+            get;
+        }
+
+        public OutData[] doseCrudes
+        {
+            set;
+            get;
+        }
+
+        public OutData[] riskCrudes
         {
             set;
             get;

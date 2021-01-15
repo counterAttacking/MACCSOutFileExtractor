@@ -30,11 +30,11 @@ namespace MACCSOutFileExtractor.Service
 
             for (var i = 0; i < this.extractDatas.Length; i++)
             {
-                for (var j = 0; j < this.extractDatas[i].crudes.Length; j++)
+                for (var j = 0; j < this.extractDatas[i].healthCrudes.Length; j++)
                 {
-                    if (this.extractDatas[i].crudes[j].name.Equals(distances[j]))
+                    if (this.extractDatas[i].healthCrudes[j].name.Equals(distances[j]))
                     {
-                        mergedList[j].AddRange(this.extractDatas[i].crudes[j].interval);
+                        mergedList[j].AddRange(this.extractDatas[i].healthCrudes[j].interval);
                     }
                 }
             }
