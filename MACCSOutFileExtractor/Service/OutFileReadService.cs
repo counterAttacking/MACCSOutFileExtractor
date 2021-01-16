@@ -13,6 +13,7 @@ namespace MACCSOutFileExtractor.Service
         private OutFile[] inputFiles;
         private ExtractData[] extractDatas;
         private string[] distances;
+        private Dictionary<string, string[]> distanceNames;
         private static string healthStr = "RESULT NAME = HEALTH EFFECTS CASES";
         private static string doseStr = "RESULT NAME = POPULATION DOSE (Sv)";
         private static string riskStr = "RESULT NAME = POPULATION WEIGHTED RISK";
@@ -25,17 +26,23 @@ namespace MACCSOutFileExtractor.Service
         public OutFileReadService(OutFile[] inputFiles)
         {
             this.inputFiles = inputFiles;
+            this.distanceNames = new Dictionary<string, string[]>();
         }
 
         public object GetExtractDatas() => this.extractDatas.Clone();
 
         public object GetDistances() => this.distances.Clone();
 
+        public Dictionary<string, string[]> GetDistanceNames()
+        {
+            var copied = new Dictionary<string, string[]>(this.distanceNames);
+            return copied;
+        }
+
         public void ReadOutFile()
         {
             var inputFileLen = this.inputFiles.Length;
             var extracts = new List<ExtractData>();
-            var distances = new List<string>();
 
             for (var i = 0; i < inputFileLen; i++)
             {
@@ -52,6 +59,7 @@ namespace MACCSOutFileExtractor.Service
                         riskCrudes = this.ReadRiskSection(streamReader);
                     }
                 }
+
                 var extract = new ExtractData()
                 {
                     name = inputFiles[i].name,
@@ -61,8 +69,8 @@ namespace MACCSOutFileExtractor.Service
                 };
                 extracts.Add(extract);
             }
+
             this.extractDatas = extracts.ToArray();
-            //this.distances = distances.ToArray();
         }
 
         private List<OutData> ReadHealthSection(StreamReader streamReader)
@@ -168,6 +176,12 @@ namespace MACCSOutFileExtractor.Service
             }
 
             this.distances = distances.ToArray();
+
+            var distanceName = this.MakeDistanceName(healthStr);
+            if (!this.distanceNames.ContainsKey(distanceName))
+            {
+                this.distanceNames.Add(distanceName, distances.ToArray());
+            }
             return healthCrudes;
         }
 
@@ -272,6 +286,11 @@ namespace MACCSOutFileExtractor.Service
                 }
             }
 
+            var distanceName = this.MakeDistanceName(doseStr);
+            if (!this.distanceNames.ContainsKey(distanceName))
+            {
+                this.distanceNames.Add(distanceName, distances.ToArray());
+            }
             return doseCrudes;
         }
 
@@ -374,7 +393,18 @@ namespace MACCSOutFileExtractor.Service
                 }
             }
 
+            var distanceName = this.MakeDistanceName(riskStr);
+            if (!this.distanceNames.ContainsKey(distanceName))
+            {
+                this.distanceNames.Add(distanceName, distances.ToArray());
+            }
             return riskCrudes;
+        }
+
+        private string MakeDistanceName(string originName)
+        {
+            var name = originName.Replace("RESULT NAME = ", "");
+            return name;
         }
     }
 }
