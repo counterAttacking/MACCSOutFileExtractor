@@ -49,7 +49,7 @@ namespace MACCSOutFileExtractor.Service
                     this.RefineRisk(section.Key, section.Value, this.mergedIntervals[riskStr]);
                 }
             }
-            this.MatchPreviousData();
+            //this.MatchPreviousData();
         }
 
         private void MatchPreviousData()
@@ -84,8 +84,8 @@ namespace MACCSOutFileExtractor.Service
                 {
                     this.MultiplyFrequency();
                 }
-                var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), this.distances[i]);
-                fileWriteService.FileWrite();
+                /*var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), this.distances[i]);
+                fileWriteService.FileWrite();*/
             }
         }
 
@@ -121,7 +121,7 @@ namespace MACCSOutFileExtractor.Service
                 {
                     this.MultiplyFrequency();
                 }
-                var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), section[i]);
+                var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), result, section[i]);
                 fileWriteService.FileWrite();
             }
         }
@@ -158,7 +158,7 @@ namespace MACCSOutFileExtractor.Service
                 {
                     this.MultiplyFrequency();
                 }
-                var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), section[i]);
+                var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), result, section[i]);
                 fileWriteService.FileWrite();
             }
         }
@@ -195,7 +195,7 @@ namespace MACCSOutFileExtractor.Service
                 {
                     this.MultiplyFrequency();
                 }
-                var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), section[i]);
+                var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), result, section[i]);
                 fileWriteService.FileWrite();
             }
         }

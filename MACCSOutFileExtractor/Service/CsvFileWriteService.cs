@@ -10,22 +10,29 @@ namespace MACCSOutFileExtractor.Service
 {
     public class CsvFileWriteService
     {
-        private static string healthStr = "CCDF_HEALTH EFFECTS CASES ";
+        private static string ccdfStr = "CCDF_";
+        private string resultStr;
         private string distanceStr;
         private static string extStr = ".csv";
         private RefineData[] refineDatas;
 
-        public CsvFileWriteService(object refineDatas, string distanceStr)
+        public CsvFileWriteService(object refineDatas, string result, string distanceStr)
         {
             this.refineDatas = (RefineData[])refineDatas;
+            this.resultStr = result;
             this.distanceStr = distanceStr;
         }
 
         public void FileWrite()
         {
             var fileName = new StringBuilder();
-            fileName.Append(healthStr);
-            this.distanceStr = this.distanceStr.Replace('/', ',');
+            fileName.Append(ccdfStr);
+            fileName.Append(resultStr);
+            fileName.Append(" ");
+            if (this.distanceStr.Contains('/'))
+            {
+                this.distanceStr = this.distanceStr.Replace('/', ',');
+            }
             fileName.Append(this.distanceStr);
             fileName.Append(extStr);
 
