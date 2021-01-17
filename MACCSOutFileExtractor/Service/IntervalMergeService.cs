@@ -10,8 +10,6 @@ namespace MACCSOutFileExtractor.Service
     public class IntervalMergeService
     {
         private ExtractData[] extractDatas;
-        private string[] distances;
-        private double[][] intervals;
         private Dictionary<string, string[]> distanceNames;
         private Dictionary<string, double[][]> mergedIntervals;
 
@@ -19,15 +17,12 @@ namespace MACCSOutFileExtractor.Service
         private static string doseStr = "POPULATION DOSE (Sv)";
         private static string riskStr = "POPULATION WEIGHTED RISK";
 
-        public IntervalMergeService(object extractDatas, object distances, Dictionary<string, string[]> distanceNames)
+        public IntervalMergeService(object extractDatas, Dictionary<string, string[]> distanceNames)
         {
             this.extractDatas = (ExtractData[])extractDatas;
-            this.distances = (string[])distances;
             this.distanceNames = distanceNames;
             this.mergedIntervals = new Dictionary<string, double[][]>();
         }
-
-        public object GetMergedInterval() => this.intervals.Clone();
 
         public Dictionary<string, double[][]> GetMergedIntervals()
         {
@@ -55,34 +50,6 @@ namespace MACCSOutFileExtractor.Service
                     this.mergedIntervals.Add(section.Key, merged);
                 }
             }
-
-            var mergedIntervals = new double[this.distances.Length][];
-            var mergedList = new List<List<double>>();
-            for (var i = 0; i < mergedIntervals.Length; i++)
-            {
-                mergedList.Add(new List<double>());
-            }
-
-            for (var i = 0; i < this.extractDatas.Length; i++)
-            {
-                for (var j = 0; j < this.extractDatas[i].healthCrudes.Length; j++)
-                {
-                    if (this.extractDatas[i].healthCrudes[j].name.Equals(distances[j]))
-                    {
-                        mergedList[j].AddRange(this.extractDatas[i].healthCrudes[j].interval);
-                    }
-                }
-            }
-
-            for (var i = 0; i < mergedList.Count; i++)
-            {
-                mergedList[i].Add(0);
-                var tmp = mergedList[i].Distinct().ToArray();
-                Array.Sort(tmp);
-                mergedIntervals[i] = tmp;
-            }
-
-            this.intervals = mergedIntervals;
         }
 
         private double[][] MergeHealthInterval(string[] section)

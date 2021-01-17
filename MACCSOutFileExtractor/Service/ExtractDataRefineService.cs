@@ -10,8 +10,6 @@ namespace MACCSOutFileExtractor.Service
     public class ExtractDataRefineService
     {
         private ExtractData[] extractDatas;
-        private double[][] intervals;
-        private string[] distances;
         private Dictionary<string, string[]> distanceNames;
         private Dictionary<string, double[][]> mergedIntervals;
         private RefineData[] refineDatas;
@@ -21,12 +19,9 @@ namespace MACCSOutFileExtractor.Service
         private static string doseStr = "POPULATION DOSE (Sv)";
         private static string riskStr = "POPULATION WEIGHTED RISK";
 
-        public ExtractDataRefineService(object extractDatas, object intervals, Dictionary<string, double[][]> mergedIntervals,
-            object distances, Dictionary<string, string[]> distanceNames, bool isFrequency)
+        public ExtractDataRefineService(object extractDatas, Dictionary<string, double[][]> mergedIntervals, Dictionary<string, string[]> distanceNames, bool isFrequency)
         {
             this.extractDatas = (ExtractData[])extractDatas;
-            this.intervals = (double[][])intervals;
-            this.distances = (string[])distances;
             this.distanceNames = distanceNames;
             this.mergedIntervals = mergedIntervals;
             this.isFrequency = isFrequency;
@@ -48,44 +43,6 @@ namespace MACCSOutFileExtractor.Service
                 {
                     this.RefineRisk(section.Key, section.Value, this.mergedIntervals[riskStr]);
                 }
-            }
-            //this.MatchPreviousData();
-        }
-
-        private void MatchPreviousData()
-        {
-            for (var i = 0; i < this.distances.Length; i++)
-            {
-                var datas = new List<RefineData>();
-                for (var j = 0; j < this.extractDatas.Length; j++)
-                {
-                    if (this.distances[i].Equals(this.extractDatas[j].healthCrudes[i].name))
-                    {
-                        var data = new RefineData
-                        {
-                            name = this.extractDatas[j].name,
-                            interval = this.intervals[i],
-                            intervalVal = new double[this.intervals[i].Length],
-                            distance = this.extractDatas[j].healthCrudes[i].name
-                        };
-                        for (var k = 0; k < this.extractDatas[j].healthCrudes[i].interval.Length; k++)
-                        {
-                            var idx = Array.FindIndex(this.intervals[i], target => target == this.extractDatas[j].healthCrudes[i].interval[k]);
-                            data.intervalVal[idx] = this.extractDatas[j].healthCrudes[i].intervalVal[k];
-                        }
-                        datas.Add(data);
-                    }
-                }
-                this.refineDatas = datas.ToArray();
-                var interpolationService = new InterpolationService(this.refineDatas.Clone());
-                interpolationService.Interpolation();
-                this.refineDatas = (RefineData[])interpolationService.GetRefineData();
-                if (this.isFrequency == true)
-                {
-                    this.MultiplyFrequency();
-                }
-                /*var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), this.distances[i]);
-                fileWriteService.FileWrite();*/
             }
         }
 

@@ -12,7 +12,6 @@ namespace MACCSOutFileExtractor.Service
     {
         private OutFile[] inputFiles;
         private ExtractData[] extractDatas;
-        private string[] distances;
         private Dictionary<string, string[]> distanceNames;
 
         private static string healthStr = "RESULT NAME = HEALTH EFFECTS CASES";
@@ -31,8 +30,6 @@ namespace MACCSOutFileExtractor.Service
         }
 
         public object GetExtractDatas() => this.extractDatas.Clone();
-
-        public object GetDistances() => this.distances.Clone();
 
         public Dictionary<string, string[]> GetDistanceNames()
         {
@@ -175,8 +172,6 @@ namespace MACCSOutFileExtractor.Service
                     }
                 }
             }
-
-            this.distances = distances.ToArray();
 
             var distanceName = this.MakeDistanceName(healthStr);
             if (!this.distanceNames.ContainsKey(distanceName))
