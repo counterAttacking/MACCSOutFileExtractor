@@ -14,6 +14,7 @@ namespace MACCSOutFileExtractor.Service
         private ExtractData[] extractDatas;
         private string[] distances;
         private Dictionary<string, string[]> distanceNames;
+
         private static string healthStr = "RESULT NAME = HEALTH EFFECTS CASES";
         private static string doseStr = "RESULT NAME = POPULATION DOSE (Sv)";
         private static string riskStr = "RESULT NAME = POPULATION WEIGHTED RISK";
