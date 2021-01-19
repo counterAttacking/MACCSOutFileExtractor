@@ -31,5 +31,23 @@ namespace MACCSOutFileExtractor.Model
             set;
             get;
         }
+
+        public OutlineData[] healthOutlines
+        {
+            set;
+            get;
+        }
+
+        public OutlineData[] doseOutlines
+        {
+            set;
+            get;
+        }
+
+        public OutlineData[] riskOutlines
+        {
+            set;
+            get;
+        }
     }
 }

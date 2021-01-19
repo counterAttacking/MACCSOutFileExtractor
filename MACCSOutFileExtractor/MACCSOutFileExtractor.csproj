@@ -79,6 +79,7 @@
     <Compile Include="Model\OutData.cs" />
     <Compile Include="Model\ExtractData.cs" />
     <Compile Include="Model\OutFile.cs" />
+    <Compile Include="Model\OutlineData.cs" />
     <Compile Include="Model\RefineData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

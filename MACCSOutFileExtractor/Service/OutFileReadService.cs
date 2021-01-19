@@ -14,10 +14,14 @@ namespace MACCSOutFileExtractor.Service
         private ExtractData[] extractDatas;
         private Dictionary<string, string[]> distanceNames;
 
-        private static string healthStr = "RESULT NAME = HEALTH EFFECTS CASES";
-        private static string doseStr = "RESULT NAME = POPULATION DOSE (Sv)";
-        private static string riskStr = "RESULT NAME = POPULATION WEIGHTED RISK";
-        private static string peakStr = "RESULT NAME = PEAK DOSE FOUND ON SPATIAL GRID (Sv)";
+        private static string probStr = "PROB                           QUANTILES                             PEAK      PEAK  PEAK";
+        private static string healthStr = "HEALTH EFFECTS CASES";
+        private static string doseStr = "POPULATION DOSE (Sv)";
+        private static string riskStr = "POPULATION WEIGHTED RISK";
+        private static string resultHealthStr = "RESULT NAME = HEALTH EFFECTS CASES";
+        private static string resultDoseStr = "RESULT NAME = POPULATION DOSE (Sv)";
+        private static string resultRiskStr = "RESULT NAME = POPULATION WEIGHTED RISK";
+        private static string resultPeakStr = "RESULT NAME = PEAK DOSE FOUND ON SPATIAL GRID (Sv)";
         private static string fatStr = "FAT/TOTAL";
         private static string totLifStr = "L-ICRP60ED  TOT LIF";
         private static string overallStr = "OVERALL";
@@ -47,11 +51,17 @@ namespace MACCSOutFileExtractor.Service
                 var healthCrudes = new List<OutData>();
                 var doseCrudes = new List<OutData>();
                 var riskCrudes = new List<OutData>();
+                var healthOutlines = new List<OutlineData>();
+                var doseOutlines = new List<OutlineData>();
+                var riskOutlines = new List<OutlineData>();
 
                 using (var fileStream = new FileStream(inputFiles[i].fullPath, FileMode.Open, FileAccess.Read))
                 {
                     using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
                     {
+                        healthOutlines = this.ReadHealthOutline(streamReader);
+                        doseOutlines = this.ReadDoseOutline(streamReader);
+                        riskOutlines = this.ReadRiskOutline(streamReader);
                         healthCrudes = this.ReadHealthSection(streamReader);
                         doseCrudes = this.ReadDoseSection(streamReader);
                         riskCrudes = this.ReadRiskSection(streamReader);
@@ -63,7 +73,10 @@ namespace MACCSOutFileExtractor.Service
                     name = inputFiles[i].name,
                     healthCrudes = healthCrudes.ToArray(),
                     doseCrudes = doseCrudes.ToArray(),
-                    riskCrudes = riskCrudes.ToArray()
+                    riskCrudes = riskCrudes.ToArray(),
+                    healthOutlines = healthOutlines.ToArray(),
+                    doseOutlines = doseOutlines.ToArray(),
+                    riskOutlines = riskOutlines.ToArray(),
                 };
                 extracts.Add(extract);
             }
@@ -71,9 +84,240 @@ namespace MACCSOutFileExtractor.Service
             this.extractDatas = extracts.ToArray();
         }
 
+        private List<OutlineData> ReadHealthOutline(StreamReader streamReader)
+        {
+            var isProbStrFound = false;
+            var isHealthStrFound = false;
+
+            var menus = new List<string>();
+            var outlines = new List<OutlineData>();
+
+            while (!streamReader.EndOfStream)
+            {
+                var readLine = streamReader.ReadLine();
+
+                if (readLine.Contains(probStr))
+                {
+                    isProbStrFound = true;
+                    continue;
+                }
+
+                if (isProbStrFound == true)
+                {
+                    readLine = readLine.Trim();
+                    if (String.IsNullOrWhiteSpace(readLine))
+                    {
+                        break;
+                    }
+                    else if (readLine.Contains("NON-ZERO"))
+                    {
+                        var tmp = readLine.Split(' ');
+                        for (var i = 0; i < tmp.Length; i++)
+                        {
+                            if (!String.IsNullOrWhiteSpace(tmp[i]))
+                            {
+                                menus.Add(tmp[i]);
+                            }
+                        }
+                        continue;
+                    }
+                    else if (readLine.Contains(healthStr))
+                    {
+                        isHealthStrFound = true;
+                        continue;
+                    }
+
+                    if (isHealthStrFound == true)
+                    {
+                        var tmp = readLine.Split(new string[] { "km" }, StringSplitOptions.None);
+                        var value = tmp[1].Trim().Split(' ');
+                        var values = new List<double>();
+                        for (var i = 0; i < value.Length; i++)
+                        {
+                            if (!String.IsNullOrWhiteSpace(value[i]))
+                            {
+                                values.Add(Convert.ToDouble(value[i]));
+                            }
+                        }
+
+                        var data = new OutlineData
+                        {
+                            section = tmp[0] + "km",
+                            sectionValue = values.ToArray(),
+                            menuName = menus.ToArray()
+                        };
+
+                        outlines.Add(data);
+                    }
+                }
+            }
+
+            return outlines;
+        }
+
+        private List<OutlineData> ReadDoseOutline(StreamReader streamReader)
+        {
+            var isProbStrFound = false;
+            var isDoseStrFound = false;
+
+            var menus = new List<string>();
+            var outlines = new List<OutlineData>();
+
+            while (!streamReader.EndOfStream)
+            {
+                var readLine = streamReader.ReadLine();
+
+                if (readLine.Contains(probStr))
+                {
+                    isProbStrFound = true;
+                    continue;
+                }
+
+                if (isProbStrFound == true)
+                {
+                    readLine = readLine.Trim();
+                    if (String.IsNullOrWhiteSpace(readLine))
+                    {
+                        if (isDoseStrFound == true)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            isProbStrFound = false;
+                            menus.Clear();
+                            continue;
+                        }
+                    }
+                    else if (readLine.Contains("NON-ZERO"))
+                    {
+                        var tmp = readLine.Split(' ');
+                        for (var i = 0; i < tmp.Length; i++)
+                        {
+                            if (!String.IsNullOrWhiteSpace(tmp[i]))
+                            {
+                                menus.Add(tmp[i]);
+                            }
+                        }
+                        continue;
+                    }
+                    else if (readLine.Contains(doseStr))
+                    {
+                        isDoseStrFound = true;
+                        continue;
+                    }
+
+                    if (isDoseStrFound == true)
+                    {
+                        var tmp = readLine.Split(new string[] { "km" }, StringSplitOptions.None);
+                        var value = tmp[1].Trim().Split(' ');
+                        var values = new List<double>();
+                        for (var i = 0; i < value.Length; i++)
+                        {
+                            if (!String.IsNullOrWhiteSpace(value[i]))
+                            {
+                                values.Add(Convert.ToDouble(value[i]));
+                            }
+                        }
+
+                        var data = new OutlineData
+                        {
+                            section = tmp[0] + "km",
+                            sectionValue = values.ToArray(),
+                            menuName = menus.ToArray()
+                        };
+
+                        outlines.Add(data);
+                    }
+                }
+            }
+
+            return outlines;
+        }
+
+        private List<OutlineData> ReadRiskOutline(StreamReader streamReader)
+        {
+            var isProbStrFound = false;
+            var isRiskStrFound = false;
+
+            var menus = new List<string>();
+            var outlines = new List<OutlineData>();
+
+            while (!streamReader.EndOfStream)
+            {
+                var readLine = streamReader.ReadLine();
+
+                if (readLine.Contains(probStr))
+                {
+                    isProbStrFound = true;
+                    continue;
+                }
+
+                if (isProbStrFound == true)
+                {
+                    readLine = readLine.Trim();
+                    if (String.IsNullOrWhiteSpace(readLine))
+                    {
+                        if (isRiskStrFound == true)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            isProbStrFound = false;
+                            menus.Clear();
+                            continue;
+                        }
+                    }
+                    else if (readLine.Contains("NON-ZERO"))
+                    {
+                        var tmp = readLine.Split(' ');
+                        for (var i = 0; i < tmp.Length; i++)
+                        {
+                            if (!String.IsNullOrWhiteSpace(tmp[i]))
+                            {
+                                menus.Add(tmp[i]);
+                            }
+                        }
+                        continue;
+                    }
+                    else if (readLine.Contains(riskStr))
+                    {
+                        isRiskStrFound = true;
+                        continue;
+                    }
+
+                    if (isRiskStrFound == true)
+                    {
+                        var tmp = readLine.Split(new string[] { "km" }, StringSplitOptions.None);
+                        var value = tmp[1].Trim().Split(' ');
+                        var values = new List<double>();
+                        for (var i = 0; i < value.Length; i++)
+                        {
+                            if (!String.IsNullOrWhiteSpace(value[i]))
+                            {
+                                values.Add(Convert.ToDouble(value[i]));
+                            }
+                        }
+
+                        var data = new OutlineData
+                        {
+                            section = tmp[0] + "km",
+                            sectionValue = values.ToArray(),
+                            menuName = menus.ToArray()
+                        };
+
+                        outlines.Add(data);
+                    }
+                }
+            }
+
+            return outlines;
+        }
+
         private List<OutData> ReadHealthSection(StreamReader streamReader)
         {
-            var isHealthStrFound = false;
+            var isResultHealthStrFound = false;
             var isOverallStrFound = false;
             var overallIdx = 0;
             string name = null;
@@ -86,16 +330,16 @@ namespace MACCSOutFileExtractor.Service
             {
                 var readLine = streamReader.ReadLine();
 
-                if (readLine.Contains(healthStr))
+                if (readLine.Contains(resultHealthStr))
                 {
                     /* 
                      * 'RESULT NAME = HEALTH EFFECTS CASES'에 해당하는 부분에 찾고자 하는 값들이 존재
                      * 이 분기문 밑으로 넘어가면 안 되기 때문에 continue 설정
                      */
-                    isHealthStrFound = true;
+                    isResultHealthStrFound = true;
                     continue;
                 }
-                else if (readLine.Contains(doseStr))
+                else if (readLine.Contains(resultDoseStr))
                 {
                     /* 
                      * 'RESULT NAME = POPULATION DOSE (Sv)' 검색된 줄 밑으로 찾고자 하는 값들은
@@ -104,10 +348,10 @@ namespace MACCSOutFileExtractor.Service
                     break;
                 }
 
-                if (isHealthStrFound == true)
+                if (isResultHealthStrFound == true)
                 {
                     /* 
-                     * healthStr 바로 다음 줄에는
+                     * resultHealthStr 바로 다음 줄에는
                      * EAL FAT/TOTAL, CAN FAT/TOTAL에 대한 내용 존재
                      * OVERALL이 존재하는 위치에 해당하는 값들만 추출
                      */
@@ -154,7 +398,7 @@ namespace MACCSOutFileExtractor.Service
                             healthCrudes.Add(healthCrude);
                             intervals.Clear();
                             intervalValues.Clear();
-                            isHealthStrFound = false;
+                            isResultHealthStrFound = false;
                             isOverallStrFound = false;
                             continue;
                         }
@@ -173,7 +417,7 @@ namespace MACCSOutFileExtractor.Service
                 }
             }
 
-            var distanceName = this.MakeDistanceName(healthStr);
+            var distanceName = this.MakeDistanceName(resultHealthStr);
             if (!this.distanceNames.ContainsKey(distanceName))
             {
                 this.distanceNames.Add(distanceName, distances.ToArray());
@@ -183,7 +427,7 @@ namespace MACCSOutFileExtractor.Service
 
         private List<OutData> ReadDoseSection(StreamReader streamReader)
         {
-            var isDoseStrFound = true;
+            var isResultDoseStrFound = true;
             var isOverallStrFound = false;
             var overallIdx = 0;
             string name = null;
@@ -196,16 +440,16 @@ namespace MACCSOutFileExtractor.Service
             {
                 var readLine = streamReader.ReadLine();
 
-                if (readLine.Contains(doseStr))
+                if (readLine.Contains(resultDoseStr))
                 {
                     /*
                      * 'RESULT NAME = POPULATION DOSE (Sv)'이 나타나는 지점부터 찾고자 하는 값들이 존재
                      * 이 분기문 밑으로 넘어가면 안되기 때문에 continnue 설정
                      */
-                    isDoseStrFound = true;
+                    isResultDoseStrFound = true;
                     continue;
                 }
-                else if (readLine.Contains(riskStr))
+                else if (readLine.Contains(resultRiskStr))
                 {
                     /*
                      * 'RESULT NAME = POPULATION WEIGHTED RISK' 검색된 줄 밑으로 찾고자 하는 값들은
@@ -214,10 +458,10 @@ namespace MACCSOutFileExtractor.Service
                     break;
                 }
 
-                if (isDoseStrFound == true)
+                if (isResultDoseStrFound == true)
                 {
                     /*
-                     * doseStr 바로 다음 줄에는 'L-ICRP60ED  TOT LIF'이 존재하며
+                     * resultDoseStr 바로 다음 줄에는 'L-ICRP60ED  TOT LIF'이 존재하며
                      * OVERALL이 존재하는 위치하는 곳의 값들을 추출
                      */
 
@@ -263,7 +507,7 @@ namespace MACCSOutFileExtractor.Service
                             doseCrudes.Add(doseCrude);
                             intervals.Clear();
                             intervalValues.Clear();
-                            isDoseStrFound = false;
+                            isResultDoseStrFound = false;
                             isOverallStrFound = false;
                             continue;
                         }
@@ -282,7 +526,7 @@ namespace MACCSOutFileExtractor.Service
                 }
             }
 
-            var distanceName = this.MakeDistanceName(doseStr);
+            var distanceName = this.MakeDistanceName(resultDoseStr);
             if (!this.distanceNames.ContainsKey(distanceName))
             {
                 this.distanceNames.Add(distanceName, distances.ToArray());
@@ -292,7 +536,7 @@ namespace MACCSOutFileExtractor.Service
 
         private List<OutData> ReadRiskSection(StreamReader streamReader)
         {
-            var isRiskStrFound = true;
+            var isResultRiskStrFound = true;
             var isOverallStrFound = false;
             var overallIdx = 0;
             string name = null;
@@ -305,25 +549,25 @@ namespace MACCSOutFileExtractor.Service
             {
                 var readLine = streamReader.ReadLine();
 
-                if (readLine.Contains(riskStr))
+                if (readLine.Contains(resultRiskStr))
                 {
                     /*
                      * 'RESULT NAME = POPULATION WEIGHTED RISK'이 나타나는 지점부터 찾고자 하는 값들이 존재
                      * 이 분기문 밑으로 넘어가면 안되기 때문에 continnue 설정
                      */
-                    isRiskStrFound = true;
+                    isResultRiskStrFound = true;
                     continue;
                 }
-                else if (readLine.Contains(peakStr))
+                else if (readLine.Contains(resultPeakStr))
                 {
                     // 추출할 값 모두 추출
                     break;
                 }
 
-                if (isRiskStrFound == true)
+                if (isResultRiskStrFound == true)
                 {
                     /*
-                     * riskStr 바로 다음 줄에는
+                     * resultRiskStr 바로 다음 줄에는
                      * EAL FAT/TOTAL, CAN FAT/TOTAL에 대한 내용 존재
                      * OVERALL이 존재하는 위치하는 곳의 값들을 추출
                      */
@@ -370,7 +614,7 @@ namespace MACCSOutFileExtractor.Service
                             riskCrudes.Add(riskCrude);
                             intervals.Clear();
                             intervalValues.Clear();
-                            isRiskStrFound = false;
+                            isResultRiskStrFound = false;
                             isOverallStrFound = false;
                             continue;
                         }
@@ -389,7 +633,7 @@ namespace MACCSOutFileExtractor.Service
                 }
             }
 
-            var distanceName = this.MakeDistanceName(riskStr);
+            var distanceName = this.MakeDistanceName(resultRiskStr);
             if (!this.distanceNames.ContainsKey(distanceName))
             {
                 this.distanceNames.Add(distanceName, distances.ToArray());
