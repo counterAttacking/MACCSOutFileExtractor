@@ -78,7 +78,7 @@ namespace MACCSOutFileExtractor.Service
                 {
                     this.MultiplyFrequency();
                 }
-                var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), result, section[i]);
+                var fileWriteService = new RefineDataWriteService(this.refineDatas.Clone(), result, section[i]);
                 fileWriteService.FileWrite();
             }
         }
@@ -115,7 +115,7 @@ namespace MACCSOutFileExtractor.Service
                 {
                     this.MultiplyFrequency();
                 }
-                var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), result, section[i]);
+                var fileWriteService = new RefineDataWriteService(this.refineDatas.Clone(), result, section[i]);
                 fileWriteService.FileWrite();
             }
         }
@@ -152,7 +152,7 @@ namespace MACCSOutFileExtractor.Service
                 {
                     this.MultiplyFrequency();
                 }
-                var fileWriteService = new CsvFileWriteService(this.refineDatas.Clone(), result, section[i]);
+                var fileWriteService = new RefineDataWriteService(this.refineDatas.Clone(), result, section[i]);
                 fileWriteService.FileWrite();
             }
         }

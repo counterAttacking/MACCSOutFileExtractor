@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MACCSOutFileExtractor.Service
 {
-    public class CsvFileWriteService
+    public class RefineDataWriteService
     {
         private static string ccdfStr = "CCDF_";
         private string resultStr;
@@ -16,7 +16,7 @@ namespace MACCSOutFileExtractor.Service
         private static string extStr = ".csv";
         private RefineData[] refineDatas;
 
-        public CsvFileWriteService(object refineDatas, string result, string distanceStr)
+        public RefineDataWriteService(object refineDatas, string result, string distanceStr)
         {
             this.refineDatas = (RefineData[])refineDatas;
             this.resultStr = result;
