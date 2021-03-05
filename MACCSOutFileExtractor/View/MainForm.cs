@@ -21,6 +21,7 @@ namespace MACCSOutFileExtractor.View
         private FileExplorerForm frmFileExplorer;
         private FrequencyInputForm frmFrequencyInput;
         private BuildCheckForm frmBuildCheck;
+        private StatusOutputForm frmStatus;
 
         public MainForm()
         {
@@ -29,12 +30,16 @@ namespace MACCSOutFileExtractor.View
             this.frmFileExplorer = new FileExplorerForm();
             this.frmFrequencyInput = new FrequencyInputForm();
             this.frmBuildCheck = new BuildCheckForm();
+            this.frmStatus = StatusOutputForm.GetFrmStatus;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.frmFileExplorer.Show(this.dockPnlMain, DockState.DockLeft);
-            this.frmFrequencyInput.Show(this.dockPnlMain, DockState.DockLeftAutoHide);
+            this.frmFrequencyInput.Show(this.frmFileExplorer.Pane, DockAlignment.Bottom, 0.5);
+            this.frmStatus.Show(this.dockPnlMain, DockState.DockBottom);
+
+            this.dockPnlMain.UpdateDockWindowZOrder(DockStyle.Left, true);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -79,7 +84,12 @@ namespace MACCSOutFileExtractor.View
             this.frmFrequencyInput.Show(this.dockPnlMain, DockState.DockLeft);
         }
 
-        private void MsiRun_Click(object sender, EventArgs e)
+        private void MsiShowStatus_Click(object sender, EventArgs e)
+        {
+            this.frmStatus.Show(this.dockPnlMain, DockState.DockBottom);
+        }
+
+        private async void MsiRun_Click(object sender, EventArgs e)
         {
             var outFiles = OutFileOpenService.GetOutFileOpenService.GetFiles().ToArray();
             if (outFiles.Length <= 0)
@@ -95,12 +105,27 @@ namespace MACCSOutFileExtractor.View
             }
             else if (this.frmBuildCheck.GetIsClicked == true)
             {
+                var str = new StringBuilder();
+                str.Append(DateTime.Now.ToString("[yyyy-MM-dd-HH:mm:ss]   "));
+                str.AppendLine("Running is started");
+                this.PrintStatus(str);
+
                 var extractFrequency = ExtractFrequencyDataService.GetExtractFrequencyService;
                 extractFrequency.ExtractFrequency(this.frmFrequencyInput.GetDgvFrequency());
 
-                var extractManager = new ExtractManager(outFiles, this.frmBuildCheck.GetIsChecked);
-                extractManager.Run();
+                var extractManager = new ExtractManager(this, outFiles, this.frmBuildCheck.GetIsChecked);
+                await extractManager.Run();
+
+                str.Clear();
+                str.Append(DateTime.Now.ToString("[yyyy-MM-dd-HH:mm:ss]   "));
+                str.AppendLine("Running is completed");
+                this.PrintStatus(str);
             }
+        }
+
+        public void PrintStatus(StringBuilder stringBuilder)
+        {
+            this.frmStatus.PrintStatus(stringBuilder);
         }
     }
 }
